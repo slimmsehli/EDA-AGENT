@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export OPENAI_BASE_URL="https://api.openai.com/v1"
+export OPENAI_MODEL="gpt-5.4"
+export GEMINI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
+export GEMINI_MODEL="gemini-3.1-flash-lite"
+#"gemini-2.5-flash-lite" #"Antigravity" #"gemini-1.5-turbo" "gemini-2.5-flash"

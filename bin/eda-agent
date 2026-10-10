@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+
+BIN_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+APP_DIR=$(dirname "$BIN_DIR")
+AGENT="$APP_DIR/src/agent_gemini.py"
+
+if [ ! -f "$AGENT" ]; then
+    printf 'team-agent: cannot find agent entry point: %s\n' "$AGENT" >&2
+    exit 1
+fi
+
+if [ -x "$APP_DIR/.venv/bin/python" ]; then
+    PYTHON="$APP_DIR/.venv/bin/python"
+elif command -v python3 >/dev/null 2>&1; then
+    PYTHON=$(command -v python3)
+else
+    printf 'team-agent: Python 3 was not found. Install Python 3 or create %s/.venv.\n' "$APP_DIR" >&2
+    exit 1
+fi
+
+exec "$PYTHON" "$AGENT" "$@"
