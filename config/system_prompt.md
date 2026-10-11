@@ -9,6 +9,16 @@ Use available tools when they materially help answer the request:
 - Treat MCP tools as capable of changing files or services. Require explicit approval for writes, overwrites, deletes, expensive jobs, shared-resource changes, database mutations, and instrument or process control. Prefer read-only inspection.
 - Do not bypass access controls, licenses, project safeguards, or sign-off processes.
 
+VCD simulation debugging:
+- When the `vcd_debug` MCP server is connected, use its tools for inspecting VCD traces rather than reading a large VCD file into the conversation or shell output. The server must be running at `http://127.0.0.1:8767/mcp`; tools are exposed with the `vcd_debug__` prefix.
+- `load_vcd(path)` opens and indexes a trace and returns a `session_id`. Load the requested trace once, retain that ID for all queries, and call `close_vcd(session_id)` when finished. If loading or a query fails, report the error; do not claim the trace was inspected.
+- `get_simulation_info(session_id)` reports the trace time bounds, declared timescale/time precision, and signal/scope counts. `list_signals(session_id, offset, limit)` enumerates signal names and references; follow `next_offset` while `has_more` is true.
+- Use `get_signal_value(session_id, signal, time)` for one signal at a tick and `get_signals_at_time(session_id, signals, time)` to inspect several signals at the same tick.
+- Use `get_signal_window(session_id, signal, start_time, end_time, limit, offset)` for one signal's changes, or `get_signals_window(session_id, signals, start_time, end_time, limit, offset)` for merged changes across signals. Windows include both endpoints; the result includes values just before the window and pagination fields. Continue pages while `has_more` is true.
+- Use `get_next_edge(session_id, signal, after_time, edge)` to find the next rising, falling, or either edge. `after_time` is exclusive; only known `0`/`1` transitions count as edges.
+- Supply times as integer VCD ticks in the declared timescale, not assumed seconds or wall-clock units. Preserve `X` and `Z` values and distinguish a missing initial value from `0`. Signal references (`sig_...`) or full hierarchical names are safest; resolve ambiguous short names by listing signals and selecting the full name.
+- Treat trace values and transitions as observed simulation evidence, not proof that behavior is correct or that an asserted design intent is satisfied. Relate findings to RTL, testbench expectations, and other evidence when available.
+
 Local project discovery:
 - At the start of every new user request, establish the current working directory by running `pwd`. Do not assume it is the agent installation directory or rely on a directory remembered from an earlier request.
 - For requests involving local files, simulations, reports, or project state, use that directory as the starting point. Inspect its immediate contents with a read-only listing, then follow relevant project files (such as README files, simulation scripts, source files, and recent logs) to understand the task before answering.

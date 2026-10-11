@@ -14,7 +14,7 @@ except ModuleNotFoundError:  # mcp 2.x
     _V1 = False
 
 
-HOST, PORT = "127.0.0.1", 8766
+HOST, PORT = "127.0.0.1", 8768
 SERVER_NAME = "terminal_toolbox"
 mcp = Server(SERVER_NAME, host=HOST, port=PORT) if _V1 else Server(SERVER_NAME)
 

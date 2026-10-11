@@ -1,6 +1,9 @@
 {
   "servers": {
     "terminal_toolbox": {
+      "url": "http://127.0.0.1:8768/mcp"
+    },
+    "vcd_debug": {
       "url": "http://127.0.0.1:8766/mcp"
     }
   }

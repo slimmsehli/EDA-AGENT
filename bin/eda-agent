@@ -3,7 +3,7 @@ set -eu
 
 BIN_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 APP_DIR=$(dirname "$BIN_DIR")
-AGENT="$APP_DIR/src/agent_gemini.py"
+AGENT="$APP_DIR/src/agent_gemini_planned.py"
 
 if [ ! -f "$AGENT" ]; then
     printf 'team-agent: cannot find agent entry point: %s\n' "$AGENT" >&2

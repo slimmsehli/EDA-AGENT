@@ -88,6 +88,24 @@ The current MCP configuration uses `http://127.0.0.1:8766/mcp`. The toolbox
 works with files on the local machine. Its tools do not use the shell tool's
 confirmation prompt, so only connect to MCP servers you trust.
 
+## VCD debug server
+
+Start the VCD MCP server in a separate terminal:
+
+```bash
+python3 /path/to/agent/mcp/vcd_debug_server.py
+```
+
+It listens on `http://127.0.0.1:8767/mcp`. The terminal agent discovers its
+tools through `config/mcp_servers.json`. By default, VCD files must be under
+the server's current working directory. Set `VCD_ALLOWED_ROOTS` to a
+path-separated list of trusted directories to allow other locations. The
+server provides tools to load and close a trace, inspect timescale and
+simulation bounds, list signals, query one or many signal values at a tick,
+inspect signal transitions in a time window, and find the next known logic
+edge. Query times are integer ticks in the VCD-declared timescale; window
+bounds are inclusive.
+
 ## A note about engineering data
 
 The agent sends prompts and relevant conversation context to the configured
